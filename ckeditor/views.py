@@ -1,11 +1,11 @@
 from datetime import datetime
 import os
-
+# TODO dj3
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 
 from ckeditor import image_processing
@@ -47,7 +47,7 @@ def upload(request):
     backend = image_processing.get_backend()
     try:
         backend.image_verify(upload)
-    except utils.NotAnImageException:
+    except IOError:
         return HttpResponse("""
                    <script type='text/javascript'>
                         alert('Invalid image')
@@ -137,4 +137,4 @@ def browse(request):
     context = RequestContext(request, {
         'files': get_files_browse_urls(request.user),
     })
-    return render_to_response('browse.html', context)
+    return render('browse.html', context)
